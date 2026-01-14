@@ -68,3 +68,5 @@ temp/
 # ===============================
 .eslintcache
 .prettiercache
+
+/src/generated/prisma
