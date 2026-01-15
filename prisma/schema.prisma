@@ -19,22 +19,38 @@ model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   email     String   @unique
-  name      String?
-  role      Role     @default(USER)
-  posts     Post[]
+  password  String
+  name      String
+
+  domain    Domain[]
 }
 
-model Post {
+
+model Domain {
   id        Int      @id @default(autoincrement())
+  author    User     @relation(fields: [authorId], references: [id])
+  name      String    @unique
+  subdomain String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String   @db.VarChar(255)
-  author    User     @relation(fields: [authorId], references: [id])
+  isActive  Boolean  @default(true)
+  isDeleted Boolean @default(false)
   authorId  Int
-}
 
-enum Role {
-  USER
-  ADMIN
+  urls Url[]
+
+}
+model Url {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  slug      String
+  destinationUrl String 
+  updatedAt DateTime @updatedAt
+  isActive Boolean  @default(true)
+  isDeleted Boolean @default(false)
+
+  domain    Domain   @relation(fields: [domainId], references: [id])
+  domainId  Int
+  @unique([domainId, slug])
+
 }
