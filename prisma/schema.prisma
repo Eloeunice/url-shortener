@@ -51,6 +51,7 @@ model Url {
 
   domain    Domain   @relation(fields: [domainId], references: [id])
   domainId  Int
-  @unique([domainId, slug])
+  
+  @@unique([domainId, slug])
 
 }
