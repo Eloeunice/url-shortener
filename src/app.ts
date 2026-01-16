@@ -1,6 +1,9 @@
-import { app } from './index.js';
 import { urlsRouter } from './modules/urls/url.routes.js';
-import { usersRouter } from './modules/users/user.routes.js';
+import { userRoutes } from './modules/users/user.routes.js';
+import { Router } from 'express';
 
-app.use('/urls', urlsRouter);
-app.use('/users', usersRouter);
+const routes = Router();
+routes.use('/urls', urlsRouter);
+routes.use('/user', userRoutes);
+
+export default routes;

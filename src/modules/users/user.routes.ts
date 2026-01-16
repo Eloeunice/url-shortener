@@ -1,23 +1,19 @@
 import { Router } from 'express';
+import { userController } from './user.controller.js';
+import { type Request, type Response } from 'express';
 
-export const usersRouter = Router();
+const userRoutes = Router();
 
-usersRouter.get('/', (req, res) => {
-  return res.json({ message: 'users' });
+userRoutes.get('/', (req: Request, res: Response) => {
+  return res.json({ message: 'Aqui você encontra todos os seus users' });
 });
 
-usersRouter.post('/login', (req, res) => {
-  return res.json({ message: 'users' });
-});
+userRoutes.post('/login', userController.login);
 
-usersRouter.post('/register', (req, res) => {
-  return res.json({ message: 'users' });
-});
+userRoutes.post('/register', userController.create);
 
-usersRouter.put('/', (req, res) => {
-  return res.json({ message: 'users' });
-});
+userRoutes.put('/', userController.update);
 
-usersRouter.delete('/', (req, res) => {
-  return res.json({ message: 'users' });
-});
+userRoutes.delete('/', userController.delete);
+
+export { userRoutes };
