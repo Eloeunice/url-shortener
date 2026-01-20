@@ -16,6 +16,19 @@ export class UrlRepository {
       where: { domainId_slug: { slug, domainId } },
     });
   }
+
+  async update(urlId: number, data: { domainId?: number; slug?: string; destinationUrl?: string }) {
+    return prisma.url.update({
+      where: {
+        id: urlId,
+      },
+      data,
+    });
+  }
+
+  async delete(id: number) {
+    return prisma.url.delete({ where: { id } });
+  }
 }
 
 const urlRepository = new UrlRepository();
