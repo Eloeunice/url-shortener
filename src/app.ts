@@ -4,7 +4,7 @@ import { userRoutes } from './modules/users/user.routes.js';
 import { Router } from 'express';
 
 const routes = Router();
-routes.use('/urls', urlsRouter);
+routes.use('/url', urlsRouter);
 routes.use('/user', userRoutes);
 routes.use('/domain', domainRoutes);
 

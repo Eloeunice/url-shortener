@@ -15,9 +15,9 @@ export class DomainController {
   }
   async update(req: Request, res: Response) {
     // alterar o status do dominio
-    const { name, userId, isActive } = req.body;
+    const { name, userId, subdomain, isActive } = req.body;
 
-    const domain = await domainService.update(name, userId, isActive);
+    const domain = await domainService.update(name, userId, subdomain, isActive);
     return res.json({ message: 'Domain updated', domain });
   }
   async delete(req: Request, res: Response) {
@@ -25,6 +25,7 @@ export class DomainController {
     // status do dominio para inativo
     const { name, userId, isDeleted } = req.body;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const domain = await domainService.delete(name, userId, isDeleted);
     return res.json({ message: 'Domain deleted' });
   }

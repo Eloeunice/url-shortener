@@ -19,14 +19,15 @@ export class DomainRepository {
       },
     });
   }
-  async update(name: string, userId: number, isActive: boolean) {
+  async update(name: string, userId: number, subdomain?: string, isActive?: boolean) {
     return prisma.domain.update({
       where: {
         name,
         authorId: userId,
       },
       data: {
-        isActive,
+        subdomain: subdomain || null,
+        isActive: isActive || true,
       },
     });
   }

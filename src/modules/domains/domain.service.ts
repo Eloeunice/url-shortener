@@ -11,8 +11,8 @@ class DomainService {
     return domainRepository.create(name, userId, subdomain);
   }
 
-  async update(name: string, userId: number, isActive: boolean) {
-    return domainRepository.update(name, userId, isActive);
+  async update(name: string, userId: number, subdomain?: string, isActive?: boolean) {
+    return domainRepository.update(name, userId, subdomain, isActive);
   }
   async delete(name: string, userId: number, isDeleted: boolean) {
     return domainRepository.delete(name, userId, isDeleted);
