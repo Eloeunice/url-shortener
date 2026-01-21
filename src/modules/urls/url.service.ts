@@ -1,52 +1,94 @@
 import urlRepository from './urlRepository.js';
+import domainRepository from '../domains/domain.repository.js';
+import { CreateUrlDto, UpdateUrlDto } from './url.dto.js';
 
 export class UrlService {
-  async create(domainId: number, destinationUrl: string, slug?: string) {
-    const slugFinal = await this.getUniqueSlug(domainId, slug);
-    return await urlRepository.create(domainId, slugFinal, destinationUrl);
-  }
+  // CREATE
+  async create(userId: number, domainId: number, dto: CreateUrlDto) {
+    const domain = await domainRepository.findById(domainId);
 
-  async slugGenerator(length = 6) {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let slugGenerated = '';
-    // parsear a variavel char e de forma aleatoria acrescentar na slugGenerated
-    for (let index = 0; index < chars.length; index++) {
-      const randomIndex = Math.floor(Math.random() * chars.length);
-      slugGenerated += chars[randomIndex];
+    if (!domain || domain.userId !== userId) {
+      throw new Error('Unauthorized');
     }
-    return slugGenerated;
+
+    const slugFinal = await this.getUniqueSlug(domainId, dto.slug);
+
+    const shortenedUrl = `https://www.${domain.name}/${slugFinal}`;
+
+    const url = await urlRepository.create(domainId, slugFinal, dto.destinationUrl);
+
+    return { shortenedUrl, url };
   }
 
-  async getUniqueSlug(domainId: number, slug?: string) {
+  // UPDATE
+  async update(userId: number, urlId: number, dto: UpdateUrlDto) {
+    const url = await urlRepository.findById(urlId);
+
+    if (!url) {
+      throw new Error('Url not found');
+    }
+
+    const domain = await domainRepository.findById(url.domainId);
+
+    if (!domain || domain.userId !== userId) {
+      throw new Error('Unauthorized');
+    }
+
+    const data = {
+      ...(dto.slug !== undefined && { slug: dto.slug }),
+      ...(dto.destinationUrl !== undefined && {
+        destinationUrl: dto.destinationUrl,
+      }),
+      ...(dto.isActive !== undefined && {
+        isActive: dto.isActive,
+      }),
+    };
+
+    return urlRepository.update(urlId, data);
+  }
+
+  // DELETE
+  async delete(userId: number, urlId: number) {
+    const url = await urlRepository.findById(urlId);
+
+    if (!url) {
+      throw new Error('Url not found');
+    }
+
+    const domain = await domainRepository.findById(url.domainId);
+
+    if (!domain || domain.userId !== userId) {
+      throw new Error('Unauthorized');
+    }
+
+    await urlRepository.delete(urlId);
+  }
+
+  // ===== helpers =====
+
+  private async slugGenerator(length = 6) {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let slug = '';
+
+    for (let i = 0; i < length; i++) {
+      slug += chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    return slug;
+  }
+
+  private async getUniqueSlug(domainId: number, slug?: string) {
     if (slug) {
-      const slugExists = await urlRepository.findBySlug(slug, domainId);
-      if (slugExists) {
-        throw new Error('Slug already exists');
-      }
+      const exists = await urlRepository.findBySlug(slug, domainId);
+      if (exists) throw new Error('Slug already exists');
       return slug;
     }
 
     while (true) {
-      const generatedSlug = await this.slugGenerator();
-      const slugExists = await urlRepository.findBySlug(generatedSlug, domainId);
-
-      if (!slugExists) {
-        return generatedSlug;
-      }
+      const generated = await this.slugGenerator();
+      const exists = await urlRepository.findBySlug(generated, domainId);
+      if (!exists) return generated;
     }
-  }
-
-  async update(id: number, domainId?: number, finalSlug?: string, destinationUrl?: string) {
-    const data: any = {};
-    if (domainId !== undefined) data.domainId = domainId;
-    if (finalSlug !== undefined) data.slug = finalSlug;
-    if (destinationUrl !== undefined) data.destinationUrl = destinationUrl;
-
-    return await urlRepository.update(id, data);
-  }
-
-  async delete(id: number) {
-    return await urlRepository.delete(id);
   }
 }
 

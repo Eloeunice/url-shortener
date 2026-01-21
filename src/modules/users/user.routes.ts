@@ -12,8 +12,8 @@ userRoutes.post('/login', userController.login);
 
 userRoutes.post('/register', userController.create);
 
-userRoutes.put('/', userController.update);
+userRoutes.put('/:id', userController.update);
 
-userRoutes.delete('/', userController.delete);
+userRoutes.delete('/:id', userController.delete);
 
 export { userRoutes };

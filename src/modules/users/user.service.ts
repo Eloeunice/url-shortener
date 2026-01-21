@@ -1,3 +1,5 @@
+import type { UpdateUserDTO } from './user.dto.js';
+
 export class UserService {
   constructor(private userRepository: any) {}
 
@@ -20,14 +22,14 @@ export class UserService {
     const user = await this.userRepository.create({ email, password, name });
     return user;
   }
-  async update(email: string, password: string, name: string) {
-    const user = await this.userRepository.updateByEmail(email, {
-      email,
-      password,
-      name,
-    });
-    return user;
+  async updateByEmail(email: string, data: UpdateUserDTO) {
+    if (Object.keys(data).length === 0) {
+      throw new Error('No data provided to update');
+    }
+
+    return this.userRepository.updateByEmail(email, data);
   }
+
   async delete(email: string) {
     const user = await this.userRepository.deleteByEmail(email);
     return user;

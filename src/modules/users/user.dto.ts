@@ -5,7 +5,7 @@ export interface CreateUserDTO {
 }
 
 export interface UpdateUserDTO {
-  email?: string;
+  email: string;
   password?: string;
   name?: string;
 }

@@ -11,23 +11,41 @@ export class UrlRepository {
     });
   }
 
-  async findBySlug(slug: string, domainId: number) {
+  async findById(id: number) {
     return prisma.url.findUnique({
-      where: { domainId_slug: { slug, domainId } },
+      where: { id },
     });
   }
 
-  async update(urlId: number, data: { domainId?: number; slug?: string; destinationUrl?: string }) {
-    return prisma.url.update({
+  async findBySlug(slug: string, domainId: number) {
+    return prisma.url.findUnique({
       where: {
-        id: urlId,
+        domainId_slug: {
+          domainId,
+          slug,
+        },
       },
+    });
+  }
+
+  async update(
+    urlId: number,
+    data: {
+      slug?: string;
+      destinationUrl?: string;
+      isActive?: boolean;
+    },
+  ) {
+    return prisma.url.update({
+      where: { id: urlId },
       data,
     });
   }
 
-  async delete(id: number) {
-    return prisma.url.delete({ where: { id } });
+  async delete(urlId: number) {
+    return prisma.url.delete({
+      where: { id: urlId },
+    });
   }
 }
 

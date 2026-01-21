@@ -1,12 +1,13 @@
 import { prisma } from '../../config/prisma.js';
+import { type CreateDomainDTO, type UpdateDomainDTO } from './domain.dto.js';
 
 export class DomainRepository {
-  async create(name: string, userId: number, subdomain?: string) {
+  async create(userId: number, dto: CreateDomainDTO) {
     return prisma.domain.create({
       data: {
-        name,
-        subdomain: subdomain || null,
         authorId: userId,
+        name: dto.name,
+        subdomain: dto.subdomain || null,
       },
     });
   }
@@ -19,27 +20,29 @@ export class DomainRepository {
       },
     });
   }
-  async update(name: string, userId: number, subdomain?: string, isActive?: boolean) {
-    return prisma.domain.update({
+  async findById(domainId: number) {
+    return prisma.domain.findUnique({
       where: {
-        name,
-        authorId: userId,
-      },
-      data: {
-        subdomain: subdomain || null,
-        isActive: isActive || true,
+        id: domainId,
       },
     });
   }
-  async delete(name: string, userId: number, isDeleted: boolean) {
+
+  async update(domainId: number, dto: UpdateDomainDTO) {
+    const data = {
+      ...(dto.name !== undefined && { name: dto.name }),
+      ...(dto.subdomain !== undefined && { subdomain: dto.subdomain }),
+      ...(dto.isActive !== undefined && { isActive: dto.isActive }),
+    };
+
     return prisma.domain.update({
-      where: {
-        name,
-        authorId: userId,
-      },
-      data: {
-        isDeleted,
-      },
+      where: { id: domainId },
+      data,
+    });
+  }
+  async delete(domainId: number) {
+    return prisma.domain.delete({
+      where: { id: domainId },
     });
   }
 }

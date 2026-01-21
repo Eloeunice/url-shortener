@@ -1,21 +1,22 @@
+import type { CreateDomainDTO, UpdateDomainDTO } from './domain.dto.js';
 import domainRepository from './domain.repository.js';
 
 class DomainService {
-  async create(name: string, userId: number, subdomain?: string) {
-    const domainExists = await domainRepository.findByName(name, userId);
+  async create(userId: number, dto: CreateDomainDTO) {
+    const domainExists = await domainRepository.findByName(dto.name, userId);
 
     if (domainExists) {
       throw new Error('Domain already exists');
     }
 
-    return domainRepository.create(name, userId, subdomain);
+    return domainRepository.create(userId, dto);
   }
 
-  async update(name: string, userId: number, subdomain?: string, isActive?: boolean) {
-    return domainRepository.update(name, userId, subdomain, isActive);
+  async update(domainId: number, dto: UpdateDomainDTO) {
+    return domainRepository.update(domainId, dto);
   }
-  async delete(name: string, userId: number, isDeleted: boolean) {
-    return domainRepository.delete(name, userId, isDeleted);
+  async delete(domainId: number) {
+    return domainRepository.delete(domainId);
   }
 }
 
