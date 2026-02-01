@@ -12,10 +12,31 @@ class DomainService {
     return domainRepository.create(userId, dto);
   }
 
-  async update(domainId: number, dto: UpdateDomainDTO) {
+  async update(userId: number, domainId: number, dto: UpdateDomainDTO) {
+    const domain = await domainRepository.findById(domainId);
+
+    if (!domain) {
+      throw new Error('Domain not found');
+    }
+
+    if (domain.authorId !== userId) {
+      throw new Error('Unauthorized');
+    }
+
     return domainRepository.update(domainId, dto);
   }
-  async delete(domainId: number) {
+
+  async delete(userId: number, domainId: number) {
+    const domain = await domainRepository.findById(domainId);
+
+    if (!domain) {
+      throw new Error('Domain not found');
+    }
+
+    if (domain.authorId !== userId) {
+      throw new Error('Unauthorized');
+    }
+
     return domainRepository.delete(domainId);
   }
 }

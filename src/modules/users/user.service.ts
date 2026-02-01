@@ -8,8 +8,8 @@ export class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    if (user.password !== password) {
-      throw new Error('Invalid password');
+    if (user.password !== password || user.email !== email) {
+      throw new Error('Invalid password and/or username');
     }
 
     return user;

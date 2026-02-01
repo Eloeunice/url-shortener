@@ -1,10 +1,10 @@
 export interface CreateDomainDTO {
   name: string;
-  subdomain?: string;
+  subdomain?: string | undefined;
 }
 
 export interface UpdateDomainDTO {
-  name?: string;
-  subdomain?: string;
-  isActive?: boolean;
+  name?: string | undefined;
+  subdomain?: string | undefined;
+  isActive?: boolean | undefined;
 }

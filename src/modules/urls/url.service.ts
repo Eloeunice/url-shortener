@@ -1,13 +1,13 @@
 import urlRepository from './urlRepository.js';
 import domainRepository from '../domains/domain.repository.js';
-import { CreateUrlDto, UpdateUrlDto } from './url.dto.js';
+import { type CreateUrlDto, type UpdateUrlDto } from './url.dto.js';
 
 export class UrlService {
   // CREATE
   async create(userId: number, domainId: number, dto: CreateUrlDto) {
     const domain = await domainRepository.findById(domainId);
 
-    if (!domain || domain.userId !== userId) {
+    if (!domain || domain.authorId !== userId) {
       throw new Error('Unauthorized');
     }
 
@@ -30,7 +30,7 @@ export class UrlService {
 
     const domain = await domainRepository.findById(url.domainId);
 
-    if (!domain || domain.userId !== userId) {
+    if (!domain || domain.authorId !== userId) {
       throw new Error('Unauthorized');
     }
 
@@ -57,7 +57,7 @@ export class UrlService {
 
     const domain = await domainRepository.findById(url.domainId);
 
-    if (!domain || domain.userId !== userId) {
+    if (!domain || domain.authorId !== userId) {
       throw new Error('Unauthorized');
     }
 

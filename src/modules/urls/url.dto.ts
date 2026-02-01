@@ -1,10 +1,10 @@
 export interface CreateUrlDto {
   destinationUrl: string;
-  slug?: string;
+  slug?: string | undefined;
 }
 
 export interface UpdateUrlDto {
-  slug?: string;
-  destinationUrl?: string;
-  isActive?: boolean;
+  slug?: string | undefined;
+  destinationUrl?: string | undefined;
+  isActive?: boolean | undefined;
 }
