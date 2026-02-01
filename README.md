@@ -10,6 +10,7 @@ API REST para encurtamento de URLs com autenticação JWT, gerenciamento de dom�
 - **Passport.js** + **JWT** - Autenticação
 - **Zod** - Validação de schemas
 - **PostgreSQL** - Banco de dados
+- **Swagger (OpenAPI 3.0)** - Documentação interativa da API
 
 ## 📋 Pré-requisitos
 
@@ -62,6 +63,17 @@ npm start
 
 O servidor estará rodando em `http://localhost:3000`
 
+## 📖 Documentação Swagger (OpenAPI)
+
+A API possui documentação interativa com **Swagger UI**. Com o servidor rodando, acesse:
+
+**http://localhost:3000/api-docs**
+
+Na interface você pode:
+- Ver todas as rotas, parâmetros e respostas
+- Testar as requisições diretamente no navegador
+- Autenticar com JWT: clique em **Authorize**, informe o token no formato `Bearer <seu-token>` (obtido em `POST /user/login`)
+
 ## 📁 Estrutura do Projeto
 
 ```
@@ -70,7 +82,8 @@ src/
 ├── index.ts               # Entry point
 ├── config/
 │   ├── auth.ts           # Configuração JWT
-│   └── prisma.ts         # Cliente Prisma
+│   ├── prisma.ts         # Cliente Prisma
+│   └── swagger.ts        # Especificação OpenAPI 3.0 (Swagger)
 ├── modules/
 │   ├── users/            # Módulo de usuários
 │   │   ├── user.controller.ts
