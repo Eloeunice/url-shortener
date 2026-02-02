@@ -9,12 +9,12 @@ userRoutes.get('/', (req: Request, res: Response) => {
   return res.json({ message: 'Aqui você encontra todos os seus users' });
 });
 
-userRoutes.post('/login', userController.login);
+userRoutes.post('/login', (req, res, next) => userController.login(req, res).catch(next));
 
-userRoutes.post('/register', userController.create);
+userRoutes.post('/register', (req, res, next) => userController.create(req, res).catch(next));
 
-userRoutes.put('/:id', authJwt, userController.update);
+userRoutes.put('/:id', authJwt, (req, res, next) => userController.update(req, res).catch(next));
 
-userRoutes.delete('/:id', userController.delete);
+userRoutes.delete('/:id', authJwt, (req, res, next) => userController.delete(req, res).catch(next));
 
 export { userRoutes };

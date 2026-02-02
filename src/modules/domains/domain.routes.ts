@@ -9,11 +9,11 @@ domainRoutes.get('/', authJwt, (req, res) => {
   return res.json({ message: 'Aqui você encontra todas as suas domínios' });
 });
 
-domainRoutes.post('/', authJwt, domainController.create);
-domainRoutes.post('/:domainId/url', authJwt, urlController.create);
+domainRoutes.post('/', authJwt, (req, res, next) => domainController.create(req, res).catch(next));
+domainRoutes.post('/:domainId/url', authJwt, (req, res, next) => urlController.create(req, res).catch(next));
 
-domainRoutes.put('/:domainId', authJwt, domainController.update);
+domainRoutes.put('/:domainId', authJwt, (req, res, next) => domainController.update(req, res).catch(next));
 
-domainRoutes.delete('/:domainId', authJwt, domainController.delete);
+domainRoutes.delete('/:domainId', authJwt, (req, res, next) => domainController.delete(req, res).catch(next));
 
 export { domainRoutes };

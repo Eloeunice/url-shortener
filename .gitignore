@@ -70,3 +70,5 @@ temp/
 .prettiercache
 
 /src/generated/prisma
+.vercel
+.env*.local

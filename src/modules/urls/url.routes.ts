@@ -8,8 +8,8 @@ urlsRouter.get('/', authJwt, (req, res) => {
   return res.json({ message: 'Aqui você encontra todas as suas urls' });
 });
 
-urlsRouter.put('/:urlId', authJwt, urlController.update);
+urlsRouter.put('/:urlId', authJwt, (req, res, next) => urlController.update(req, res).catch(next));
 
-urlsRouter.delete('/:urlId', authJwt, urlController.delete);
+urlsRouter.delete('/:urlId', authJwt, (req, res, next) => urlController.delete(req, res).catch(next));
 
 export { urlsRouter };
