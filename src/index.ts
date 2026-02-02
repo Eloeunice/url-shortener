@@ -24,5 +24,11 @@ if (process.env.VERCEL !== '1') {
   });
 }
 
+// Serverless (Vercel) calls handler(req, res) with only 2 args; Express router requires a callback.
+// Wrapping ensures app always receives (req, res, next) so router.handle never gets undefined.
+function handler(req: express.Request, res: express.Response, next?: express.NextFunction) {
+  return app(req, res, next ?? (() => {}));
+}
+
 export { app };
-export default app;
+export default handler;
