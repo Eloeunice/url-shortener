@@ -63,6 +63,20 @@ npm start
 
 O servidor estará rodando em `http://localhost:3000`
 
+### Deploy no Vercel
+
+O projeto está configurado para Vercel (`vercel.json` + export default do app). **Antes de fazer deploy:**
+
+1. **Variáveis de ambiente** – No Vercel: Project → Settings → Environment Variables. Defina:
+   - `DATABASE_URL` – URL do PostgreSQL (ex.: Vercel Postgres ou outro provedor)
+   - `AUTH_SECRET` – Segredo para assinatura JWT (não use o valor de desenvolvimento)
+
+2. O arquivo `.env` **não é enviado** no deploy; as variáveis vêm apenas do painel do Vercel.
+
+3. Depois de configurar, faça o deploy (Git ou `vercel` / `vc deploy`).
+
+Se aparecer **FUNCTION_INVOCATION_FAILED**, confira se `AUTH_SECRET` e `DATABASE_URL` estão definidos no ambiente do Vercel.
+
 ## 📖 Documentação Swagger (OpenAPI)
 
 A API possui documentação interativa com **Swagger UI**. Com o servidor rodando, acesse:

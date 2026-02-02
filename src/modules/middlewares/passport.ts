@@ -4,7 +4,9 @@ import { prisma } from '../../config/prisma.js';
 import { authConfig } from '../../config/auth.js';
 
 if (!authConfig.jwt.secret) {
-  throw new Error('JWT_SECRET não definida');
+  throw new Error(
+    'AUTH_SECRET is not set. Set it in your environment (e.g. .env locally or Vercel Project Settings → Environment Variables).',
+  );
 }
 
 passport.use(
